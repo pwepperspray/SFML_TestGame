@@ -1,44 +1,76 @@
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+#include<iostream>
+#include<SFML/Graphics.hpp>
 
-int main() {
 
-	std::cout << "kill me" << std::endl;
-	sf::RenderWindow mainwindow(sf::VideoMode(960,540), "Hello World");
-	sf::CircleShape c(20);
-	mainwindow.setVerticalSyncEnabled(true);
-
-	sf::Image bg1;
-	if (!bg1.loadFromFile(".\\testassets\\background_layer_1.png")){
-		return -1;
-	}
-	sf::Texture t1;	
-	if (!t1.loadFromImage(bg1)){
-		return -1;
-	}
-
-	sf::Music music;
-	if(!music.openFromFile(".\\data\\bgm\\tm.wav")){
-		return -1;
-	}
-	music.play();
-
-	while(mainwindow.isOpen()){
-		sf::Event ev;
-
-		while(mainwindow.pollEvent(ev)){
-			if(ev.type == sf::Event::Closed){
-				mainwindow.close();
+int main(){
+	
+	
+	int width = 940;
+	int height = 540;
+	float x = width-32;
+	float y = height - 64;
+	sf::RenderWindow window(sf::VideoMode(width,height), "abc");
+	sf::Texture tile;
+	tile.loadFromFile("data\\assets\\tileset.png");
+	
+	sf::Texture bg;
+	bg.loadFromFile("data\\assets\\bg.png");
+	sf::Sprite background(bg);    
+	background.setScale(1.1f,1);
+	
+	sf::Sprite point(tile);
+	point.setTextureRect(sf::IntRect(32,32,32,32));
+	point.setPosition(x,y);
+	
+	sf::Sprite ground;
+	ground.setTexture(tile);
+	ground.setTextureRect(sf::IntRect(0,0,32,32));
+		
+	std::cout << y << std::endl;
+	
+	while(window.isOpen()){
+		sf::Event event;
+		while(window.pollEvent(event))
+		{
+			if(event.type == sf::Event::Closed){
+				window.close();
 			}
-
-	mainwindow.clear();
-	sf::Sprite sprite;
-	sprite.setTexture(t1);
-	sprite.setScale(3,4);
-	mainwindow.draw(sprite);
-	mainwindow.display();	
 		}
+		
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+			if(x <= width-32){
+				point.setPosition(x+=0.5,y);
+			}
+			std::cout << x << std::endl;
+		}
+		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+			if(x >= 0){
+				point.setPosition(x-=0.5,y);
+			}
+			std::cout << x << std::endl;
+		}
+		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+			if(y >= 0){
+				point.setPosition(x,y-=0.5);
+			}
+			std::cout << y << std::endl;
+		}
+		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+			if(y <= height-(32*2)){
+				point.setPosition(x,y+=0.5);
+			}
+			std::cout << y << std::endl;
+		}
+		
+		
+		window.clear();
+		window.draw(background);
+		for(int x = 0; x <= width; x += 32){
+		ground.setPosition(x,height-32);
+		window.draw(ground);
+		}
+		window.draw(point);
+		window.display();
 	}
 	return 0;
 }

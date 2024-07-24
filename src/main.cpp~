@@ -1,44 +1,38 @@
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+#include<iostream>
+#include<SFML/Graphics.hpp>
 
-int main() {
+int main(){
 
-	std::cout << "kill me" << std::endl;
-	sf::RenderWindow mainwindow(sf::VideoMode(960,540), "Hello World");
-	sf::CircleShape c(20);
-	mainwindow.setVeriticalSyncEnabled(true);
+	sf::RenderWindow window(sf::VideoMode(200,300), "abc");
+	sf::Texture tileset;
+	tileset.loadFromFile("data\\assets\\tile.png");
+        sf::Sprite ground;
+	ground.setTexture(tileset);
+	ground.setTextureRect(sf::IntRect(0,0,8,8));
 
-	sf::Image bg1;
-	if (!bg1.loadFromFile(".\\testassets\\background_layer_1.png")){
-		return -1;
-	}
-	sf::Texture t1;	
-	if (!t1.loadFromImage(bg1)){
-		return -1;
-	}
 
-	sf::Music music;
-	if(!music.openFromFile(".\\data\\bgm\\tm.wav")){
-		return -1;
-	}
-	music.play();
 
-	while(mainwindow.isOpen()){
-		sf::Event ev;
 
-		while(mainwindow.pollEvent(ev)){
-			if(ev.type == sf::Event::Closed){
-				mainwindow.close();
+
+
+
+
+
+
+
+
+
+	while(window.isOpen()){
+		sf::Event e;
+		while(window.pollEvent(e))
+		{
+			if(e.type == sf::Event::Closed){
+				window.close();
 			}
-
-	mainwindow.clear();
-	sf::Sprite sprite;
-	sprite.setTexture(t1);
-	sprite.setScale(3,4);
-	mainwindow.draw(sprite);
-	mainwindow.display();	
 		}
+		window.clear();
+		window.draw(ground);
+		window.display();
 	}
 	return 0;
 }
