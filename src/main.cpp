@@ -9,6 +9,7 @@ int main(){
 	int height = 540;
 	float x = width-32;
 	float y = height - 64;
+	const float JUMPHEIGHT = 400;
 	sf::RenderWindow window(sf::VideoMode(width,height), "abc");
 	sf::Texture tile;
 	tile.loadFromFile("data\\assets\\tileset.png");
@@ -25,8 +26,9 @@ int main(){
 	sf::Sprite ground;
 	ground.setTexture(tile);
 	ground.setTextureRect(sf::IntRect(0,0,32,32));
-		
-	std::cout << y << std::endl;
+	
+	sf::Vector2u size = tile.getSize();
+	//std::cout << size << std::endl;
 	
 	while(window.isOpen()){
 		sf::Event event;
@@ -36,6 +38,14 @@ int main(){
 				window.close();
 			}
 		}
+		window.clear();
+		window.draw(background);
+		for(int x = 0; x <= width; x += 32){
+		ground.setPosition(x,height-32);
+		window.draw(ground);
+		}
+		window.draw(point);
+		window.display();
 		
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
 			if(x <= width-32){
@@ -51,10 +61,11 @@ int main(){
 		}
 		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
 			if(y >= 0){
-				point.setPosition(x,y-=0.5);
+				point.setPosition(x,y-=4);
 			}
 			std::cout << y << std::endl;
 		}
+			
 		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
 			if(y <= height-(32*2)){
 				point.setPosition(x,y+=0.5);
@@ -62,15 +73,11 @@ int main(){
 			std::cout << y << std::endl;
 		}
 		
-		
-		window.clear();
-		window.draw(background);
-		for(int x = 0; x <= width; x += 32){
-		ground.setPosition(x,height-32);
-		window.draw(ground);
+		if(y > JUMPHEIGHT){
+			while(y <! JUMPHEIGHT || y != height-32){
+				point.setPosition(x,y-=0.5);
+			}
 		}
-		window.draw(point);
-		window.display();
 	}
 	return 0;
 }
