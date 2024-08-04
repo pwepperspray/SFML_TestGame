@@ -72,12 +72,6 @@ int main(){
 			}
 			std::cout << y << std::endl;
 		}
-		
-		if(y > JUMPHEIGHT){
-			while(y <! JUMPHEIGHT || y != height-32){
-				point.setPosition(x,y-=0.5);
-			}
-		}
 	}
 	return 0;
 }
